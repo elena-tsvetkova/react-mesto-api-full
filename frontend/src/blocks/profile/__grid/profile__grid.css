@@ -1,0 +1,18 @@
+.profile__grid {
+    display: grid;
+    gap: 10px 18px;
+    grid-template-columns: 120px 1fr 24px;
+    grid-template-rows: 65px 1fr;
+    min-height: 73px;
+    position: relative;
+   }
+
+@media screen and (max-width: 580px) {
+    .profile__grid {
+        margin: 0 0 32px;
+        gap: 11px 10px;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: repeat(3, minmax(min-content, max-content));
+        justify-items: center;
+    }
+}

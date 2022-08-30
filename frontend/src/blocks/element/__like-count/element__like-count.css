@@ -1,0 +1,7 @@
+.element__like-count {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  padding-left: 7px;
+  padding-top: 3px;
+}
+

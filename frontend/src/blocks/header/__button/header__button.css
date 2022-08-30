@@ -1,0 +1,10 @@
+.header__button{
+  background-color: #000000;
+  height: 22px;
+  width: 55px;
+  color: white;
+  font-size: 18px;
+line-height: 22px;
+padding: 0;
+border: none;
+}

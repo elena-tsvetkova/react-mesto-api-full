@@ -1,0 +1,20 @@
+.elements {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    column-gap: 17px;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+@media screen and (max-width: 880px) {
+    .elements {
+        column-gap: 25px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .elements {
+        column-gap: 20px;
+    }
+}

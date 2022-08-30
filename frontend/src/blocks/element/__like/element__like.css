@@ -1,0 +1,20 @@
+.element__like {
+    width: 22px;
+    height: 19px;
+    margin: 30px 20px 0 0;
+    border: none;
+    font-size: 24px;
+    font-weight: 700;
+    background-image: url(../../../images/layk.svg);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: block;
+}
+
+.element__like:hover {
+    cursor:pointer;
+    opacity: 0.5;
+}
+

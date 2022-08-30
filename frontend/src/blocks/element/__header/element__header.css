@@ -1,0 +1,10 @@
+.element__header {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content:space-between;
+    min-height: 78px;
+    border-radius: 0 0 10px 10px;
+}
+
+
