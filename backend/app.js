@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors, Joi, celebrate } = require('celebrate');
@@ -12,9 +13,15 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
-app.use(requestLogger);
+app.use(cors());
 app.use(bodyParser.json());
+app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Краш тест');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
