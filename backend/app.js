@@ -59,7 +59,9 @@ app.use((err, req, res, next) => {
   next();
 });
 
-mongoose.connect('mongodb://localhost:27017/mestodb', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/mestodb', { useNewUrlParser: true })
+.then( () => console.log("connected to DB."))
+.catch( err => console.log(err));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
