@@ -21,7 +21,18 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 .then( () => console.log("connected to DB."))
 .catch( err => console.log(err));
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://elenatsvetkova.domainname.students.nomoredomains.sbs',
+    'https://elenatsvetkova.domainname.students.nomoredomains.sbs',
+    'http://api.elena.domainname.students.nomoredomains.sbs',
+    'https://api.elena.domainname.students.nomoredomains.sbs',
+  ],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(requestLogger);
 
