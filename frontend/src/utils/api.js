@@ -1,4 +1,6 @@
- class Api {
+const token = localStorage.getItem('jwt');
+
+class Api {
   constructor(options) {
     this._url = options.baseUrl;
     this._headers = options.headers;
@@ -60,7 +62,7 @@
   }
 
   like(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
+    return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'PUT',
       headers: this._headers
     })
@@ -68,7 +70,7 @@
   }
 
   dislike(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
+    return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'DELETE',
       headers: this._headers
     })
@@ -97,9 +99,9 @@
 }
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
+  baseUrl: 'https://api.elena.domainname.students.nomoredomains.sbs',
   headers: {
-    authorization: '62c163bf-1af7-42e5-bc58-fbc19f858504',
+    authorization: `Bearer ${token}`,
     'Content-Type': 'application/json'
   }
 }); 

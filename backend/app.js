@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -20,18 +21,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 })
 .then( () => console.log("connected to DB."))
 .catch( err => console.log(err));
-//
-// const corsOptions = {
-//   origin: [
-//     'http://localhost:3000',
-//     'http://elenatsvetkova.domainname.students.nomoredomains.sbs',
-//     'https://elenatsvetkova.domainname.students.nomoredomains.sbs',
-//     'http://api.elena.domainname.students.nomoredomains.sbs',
-//     'https://api.elena.domainname.students.nomoredomains.sbs',
-//   ],
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
+
 app.use(cors());
 app.options('*', cors());
 

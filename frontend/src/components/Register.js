@@ -4,7 +4,6 @@ import { useFormWithValidation } from "../hooks/useFormWithValidation";
 
 const Register = ({ onRegister }) => {
 
-  // Используем пользовательский Хук
   const {
     values,
     handleChange,
@@ -17,10 +16,7 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Проверяем совпадение паролей
     if (values.password !== values.confirmation) {
-
       resetFrom({
         email: values.email,
       }, {
@@ -32,7 +28,6 @@ const Register = ({ onRegister }) => {
       return;
     }
 
-    // Запрос на сервер и обработка результата
     onRegister(values)
       .then(resetFrom())
       .catch(err => {

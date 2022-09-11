@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import Main from './Main.js';
@@ -18,7 +18,7 @@ import InfoTooltip from "./InfoTooltip";
 
 
 function App() {
-    const history = useNavigate();
+    const history = useHistory();
     const initialData = {
         email: ''
     }
@@ -42,8 +42,8 @@ function App() {
     useEffect(() => {
         api.getAllNeededData()
             .then(([cards, userData]) => {
-                setCurrentUser(userData)
-                setCards(cards)
+                setCurrentUser(userData.user)
+                setCards(cards.data)
             })
             .catch((err) => console.log(err))
     }, []);
@@ -72,22 +72,26 @@ function App() {
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
         if (isLiked) {
-            api.dislike(card._id).then((newCard) => {
-                setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-            });
+            api.dislike(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
+                })
+                .catch((err) => console.log(err))
         } else {
-            api.like(card._id).then((newCard) => {
-                setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-            });
+            api.like(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
+                })
+                .catch((err) => console.log(err))
         }
     }
 
     const handleUpdateUser = (data) => {
         return api.setUserInfoApi(data)
             .then(res => {
-                setCurrentUser(res);
+                setCurrentUser(res.user);
                 closeAllPopups()
                 return res;
             })
@@ -97,7 +101,8 @@ function App() {
     const handleUpdateAvatar = (data) => {
         return api.updateAvatar(data)
             .then(res => {
-                setCurrentUser(res);
+                currentUser.avatar=data.avatar
+                setCurrentUser(currentUser);
                 closeAllPopups()
                 return res;
             })
@@ -107,7 +112,9 @@ function App() {
     const handleAddPlaceSubmit = ({name, link}) => {
         return api.addCard({name, link})
             .then(res => {
-                setCards([res, ...cards]);
+                console.log('res', res)
+                console.log('cards', cards)
+                setCards([res.data, ...cards]);
                 closeAllPopups()
                 return res;
             })
@@ -149,7 +156,7 @@ function App() {
                     if (res) {
                         setLoggedIn(true);
                         setData({
-                            email: res.data.email
+                            email: res.user.email
                         })
                         history.push('/mesto');
                     }
@@ -194,31 +201,41 @@ function App() {
     return (
         <div className="page">
             <CurrentUserContext.Provider value={currentUser}>
-                {/*<Header/>*/}
-                <Routes>
-                    <Route path='/mesto' element={<ProtectedRoute/>} exact loggedIn={loggedIn} isChecking={isAuthChecking}>
-                        <Route exact path='/mesto' element={<Main/>}                             onEditProfile={handleEditProfileClick}
+                <Header
+                    loggedIn={loggedIn}
+                    onSignOut={handleSignOut}
+                    userEmail={data.email}
+                />
+                <Switch>
+                    <ProtectedRoute
+                        path="/mesto"
+                        loggedIn={loggedIn}
+                        isChecking={isAuthChecking}
+                        exact>
+                        <Main
+                            onEditProfile={handleEditProfileClick}
                             onAddPlace={handleAddPlaceClick}
                             onEditAvatar={handleEditAvatarClick}
                             onCardClick={handleCardClick}
                             cards={cards}
                             onCardDelete={handleCardDelete}
                             onCardLike={handleCardLike}/>
-                        </Route>
-                    {/*<Route path='/sign-in' exact>*/}
-                    {/*    <Login onLogin={handleLogin}/>*/}
-                    {/*</Route>*/}
+                    </ProtectedRoute>
 
-                    {/*<Route path='/sign-up' exact>*/}
-                    {/*    <Register onRegister={handleRegister}/>*/}
-                    {/*</Route>*/}
+                    <Route path='/sign-up' exact>
+                        <Register onRegister={handleRegister}/>
+                    </Route>
 
-                    {/*<Route path="*">*/}
-                    {/*    {loggedIn*/}
-                    {/*        ? <Navigate to="/mesto"/>*/}
-                    {/*        : <Navigate to="/sign-in"/>}*/}
-                    {/*</Route>*/}
-                </Routes>
+                    <Route path='/sign-in' exact>
+                        <Login onLogin={handleLogin}/>
+                    </Route>
+
+                    <Route path="*">
+                        {loggedIn
+                            ? <Redirect to="/mesto"/>
+                            : <Redirect to="/sign-in"/>}
+                    </Route>
+                </Switch>
                 <Footer/>
 
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}
@@ -232,11 +249,11 @@ function App() {
                                  onUpdateAvatar={handleUpdateAvatar}/>
                 <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
-                {/*<InfoTooltip*/}
-                {/*    isOpen={isInfoTooltipPopupOpen}*/}
-                {/*    onClose={closePopup}*/}
-                {/*    isSuccess={isSuccess}*/}
-                {/*/>*/}
+                <InfoTooltip
+                    isOpen={isInfoTooltipPopupOpen}
+                    onClose={closePopup}
+                    isSuccess={isSuccess}
+                />
 
             </CurrentUserContext.Provider>
         </div>

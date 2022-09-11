@@ -1,0 +1,9 @@
+.register__login-link {
+    color: white;
+    text-decoration: none;
+}
+
+.register__login-link:visited:active:hover {
+    text-decoration: none;
+    color: white;
+}

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import fail from '../images/fail.png';
+import success from '../images/success.png';
 import { useLocation } from 'react-router-dom';
 
 const InfoTooltip = (props) => {
