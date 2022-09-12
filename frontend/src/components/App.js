@@ -112,8 +112,6 @@ function App() {
     const handleAddPlaceSubmit = ({name, link}) => {
         return api.addCard({name, link})
             .then(res => {
-                console.log('res', res)
-                console.log('cards', cards)
                 setCards([res.data, ...cards]);
                 closeAllPopups()
                 return res;
