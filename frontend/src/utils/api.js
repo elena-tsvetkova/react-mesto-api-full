@@ -1,4 +1,3 @@
-const token = localStorage.getItem('jwt');
 
 class Api {
   constructor(options) {
@@ -16,7 +15,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
-      headers: this._headers
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`}
     })
     .then(this._checkResponse)
   }
@@ -24,7 +23,7 @@ class Api {
   setUserInfoApi(userData) { 
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify({
         name: userData.name,
         about: userData.about
@@ -36,7 +35,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       method: 'GET',
-      headers: this._headers
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`}
     })
     .then(this._checkResponse)
   }
@@ -44,7 +43,7 @@ class Api {
   addCard(data) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -56,7 +55,7 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._url}/cards/${id}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`}
     })
     .then(this._checkResponse)
   }
@@ -64,7 +63,7 @@ class Api {
   like(id) {
     return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'PUT',
-      headers: this._headers
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`}
     })
     .then(this._checkResponse)
   }
@@ -72,7 +71,7 @@ class Api {
   dislike(id) {
     return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`}
     })
     .then(this._checkResponse)
   }
@@ -80,7 +79,7 @@ class Api {
   updateAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {...this._headers, 'authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -101,7 +100,7 @@ class Api {
 const api = new Api({
   baseUrl: 'https://api.elena.domainname.students.nomoredomains.sbs',
   headers: {
-    authorization: `Bearer ${token}`,
+    'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
 }); 

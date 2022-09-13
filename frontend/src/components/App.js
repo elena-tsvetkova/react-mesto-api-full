@@ -40,13 +40,15 @@ function App() {
     }
 
     useEffect(() => {
-        api.getAllNeededData()
-            .then(([cards, userData]) => {
-                setCurrentUser(userData.user)
-                setCards(cards.data)
-            })
-            .catch((err) => console.log(err))
-    }, []);
+        if (loggedIn) {
+            api.getAllNeededData()
+                .then(([cards, userData]) => {
+                    setCurrentUser(userData.user)
+                    setCards(cards.data)
+                })
+                .catch((err) => console.log(err))
+        }
+    }, [loggedIn]);
 
     function handleEditProfileClick() {
         setIsEditProfilePopupOpen(true)
@@ -145,11 +147,11 @@ function App() {
     }
 
     const tokenCheck = useCallback(() => {
-        const jwt = localStorage.getItem('jwt');
+        const token = localStorage.getItem('token');
 
-        if (jwt) {
+        if (token) {
             setIsAuthChecking(true);
-            auth.getContent(jwt)
+            auth.getContent(token)
                 .then((res) => {
                     if (res) {
                         setLoggedIn(true);
@@ -178,7 +180,9 @@ function App() {
                     setIsInfoTooltipPopupOpen(true);
                     setIsSuccess(true);
                     setLoggedIn(true);
-                    localStorage.setItem('jwt', res.token);
+                    localStorage.setItem('token', res.token);
+                    history.push('/')
+
                 }
             })
             .then(tokenCheck)
@@ -190,7 +194,7 @@ function App() {
     }
 
     const handleSignOut = () => {
-        localStorage.removeItem('jwt');
+        localStorage.removeItem('token');
         setData(initialData);
         setLoggedIn(false);
         history.push('/sign-in');
