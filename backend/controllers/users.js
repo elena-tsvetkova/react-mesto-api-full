@@ -125,6 +125,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return Users.findUserByCredentials(email, password)
     .then((user) => {
+      console.log('NODE_ENV', NODE_ENV)
       let secret = 'some-secret-key'
       if (NODE_ENV === 'production'){
         console.log('prod')
