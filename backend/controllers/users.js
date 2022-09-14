@@ -7,6 +7,9 @@ const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 const Conflict = require('../errors/Conflict');
 
+console.log('user NODE_ENV', NODE_ENV)
+console.log('user JWT_SECRET', JWT_SECRET)
+
 module.exports.getUsers = (req, res, next) => {
   Users.find({})
     .then((user) => res.send({ user }))
